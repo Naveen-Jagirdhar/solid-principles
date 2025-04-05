@@ -152,3 +152,116 @@ class Ostrich implements Bird {
 
 ```
 Now, you will never accidentally ask an Ostrich to fly!Your code is safer, cleaner & easier to understand.
+
+## 4. Interface Segregation Principle (ISP)
+
+> Clients should not be forced to depend on interfaces they do not use
+
+Rather than one big interface , Split into smaller more specific interfaces.
+
+## Example
+
+//Violates ISP
+
+```bash
+interface invoiceAction {
+    void create();
+    void approve();
+    void reject();
+}
+
+class InvoiceCreator implements invoiceAction {
+    public void create() {}
+    public void approve() {} // not supported
+    public void reject() {}  // not supported
+}
+
+```
+// Follows ISP
+interface CreateInvoice {
+    void create();
+}
+
+interface ApproveInvoice {
+    void approve();
+}
+
+class ApproverInvoice implements ApproveInvoice {
+    public void approve() {
+      //approval logic for invoice
+    }
+}
+```
+
+## 5. Dependency Inversion Principle (DIP)
+
+> High-Level things (like business logic) should not depend on low-level things(like database),Both should depend on an abstract idea(interface).
+
+## Example
+
+//Violates DIP
+
+```bash
+class MySQLDatabase {
+    void save(String data) {
+        System.out.println("Saved to MySQL");
+    }
+}
+
+class ReportService {
+    MySQLDatabase db = new MySQLDatabase();
+
+    void generateReport(String data) {
+        db.save(data); // tightly coupled to MySQL
+    }
+}
+```
+Problem? if you want to switch to mongoDB or File Storage you must edit ReportService.
+
+//Follows or with DIP
+
+```bash
+interface Database {
+    void save(String data);
+}
+
+class MySQLDatabase implements Database {
+    public void save(String data) {
+        System.out.println("Saved to MySQL");
+    }
+}
+
+class ReportService {
+    private Database db;
+
+    public ReportService(Database db) {
+        this.db = db; // inject dependency
+    }
+
+    public void generateReport(String data) {
+        db.save(data); // works with any Database implementation
+    }
+}
+```
+Now ReportService does not care how the data is saved.It just knows it will be saved.You can plug in MYSQL, MongoDB,FileSystem or even a fake database for testing - no changes needed in the service.
+
+
+## Why Use SOLID?
+
+The SOLID principles make your code:
+
+- Easier to maintain
+- More flexible for future changes
+- Less prone to bugs
+- Cleaner and more understandable
+
+Here’s a quick summary of each principle and its core benefit:
+
+| Principle | Key Benefit                          |
+|-----------|--------------------------------------|
+| **SRP**   | Better separation of concerns        |
+| **OCP**   | Easier to add new features           |
+| **LSP**   | Prevents runtime surprises           |
+| **ISP**   | Interface clarity and granularity    |
+| **DIP**   | Promotes loose coupling & testability |
+
