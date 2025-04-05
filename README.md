@@ -92,3 +92,63 @@ class AreaCalculator {
 }
 
 ```
+
+## 3. Liskov Substituion Principle (LSP)
+
+> if a child class replaces a parent class, everything should still work fine.
+
+Think of it like this:
+> if your code work with a **Parent** , it should also work the same way with any of its **children - without breaking or chaning the behaviour**
+
+LSP says:
+> "Dont break expectations when replacing a parent class with a child class"
+
+## Example
+
+//Violates LSP
+
+```bash
+class Bird {
+    void fly() {
+        System.out.println("Flying");
+    }
+}
+```
+Now you create a subclass
+```bash
+class Sparrow extends Bird {
+    // All good, sparrows can fly
+}
+```
+But what if you do this
+```bash
+class Ostrich extends Bird {
+    void fly() {
+        throw new UnsupportedOperationException("Ostrich can't fly!");
+    }
+}
+```
+Now, if your program assumes every bird can fly & suddenly you pass an **Ostrich** - your code **crashes**
+That's a violation of **LSP**.
+
+//Follows LSP
+
+```bash
+interface Bird {}
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void fly() {
+        System.out.println("Sparrow flying");
+    }
+}
+
+class Ostrich implements Bird {
+    // No fly() method. No surprises!
+}
+
+```
+Now, you will never accidentally ask an Ostrich to fly!Your code is safer, cleaner & easier to understand.
