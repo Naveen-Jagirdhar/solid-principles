@@ -178,6 +178,7 @@ class InvoiceCreator implements invoiceAction {
 
 ```
 // Follows ISP
+``` bash
 interface CreateInvoice {
     void create();
 }
