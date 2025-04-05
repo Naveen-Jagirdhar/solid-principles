@@ -53,3 +53,42 @@ class EmailService {
         // email logic
     }
 }
+```
+
+## 2. Open/Closed Principle (OCP)
+
+> Software entities should be **open for extension** but **closed for modification**
+
+You should be able to add new functionality without changing existing code.This is commonly achieved using interface, inheritance & polymorphism.
+
+### Example
+
+//Follows OCP
+
+```bash
+
+interface Shape {
+    double area();
+}
+
+class Circle implements Shape {
+    double radius;
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+class Rectangle implements Shape {
+    double width, height;
+    public double area() {
+        return width * height;
+    }
+}
+
+class AreaCalculator {
+    public double calculateTotalArea(List<Shape> shapes) {
+        return shapes.stream().mapToDouble(Shape::area).sum();
+    }
+}
+
+```
